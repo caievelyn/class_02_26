@@ -65,10 +65,16 @@ nes_race <- nes_new %>%
                               race_adj == "2" ~ "Black",
                               TRUE ~ race_adj))
 
+party_ideo_fit <- stan_glm(data = nes_race, partyid7 ~ real_ideo, refresh = 0)
+print(party_ideo_fit)
+
 # Add a predict column
 
 nes_race %>%
   mutate(pred_gender = predict(female_partyid7_fit, nes_race),
-         pred_race = predict(race_partyid_fit, nes_race)) %>%
+         pred_race = predict(race_partyid_fit, nes_race),
+         pred_ideo = predict(party_ideo_fit, nes_race)) %>%
   slice(8000:8010)
+
+
 
